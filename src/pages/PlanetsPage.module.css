@@ -1,0 +1,88 @@
+.planets {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.planets__title {
+  margin-bottom: 1.5rem;
+}
+
+.planets__error {
+  color: #ff6b6b;
+  margin-bottom: 1rem;
+}
+
+.planets__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.planetCard {
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1.25rem;
+  background: #141420;
+}
+
+.planetCard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.planetCard__name {
+  margin: 0;
+}
+
+.planetCard__population {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.planetCard__sectionTitle {
+  margin: 1rem 0 0.5rem;
+}
+
+.planetCard__spacecraftList {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.planetCard__sendRow {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.planetCard__select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #1a1a22;
+  color: #fff;
+}
+
+.planetCard__button {
+  padding: 0.55rem 0.9rem;
+  border: none;
+  border-radius: 6px;
+  background: #4f5dff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.planetCard__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.planetCard__hint {
+  opacity: 0.85;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,26 @@
+.spacecraft {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.spacecraft__back {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.spacecraft__title {
+  margin-bottom: 1rem;
+}
+
+.spacecraft__meta {
+  margin-bottom: 1.5rem;
+}
+
+.spacecraft__description {
+  margin-bottom: 1.5rem;
+}
+
+.spacecraft__image img {
+  border-radius: 6px;
+}
