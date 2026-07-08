@@ -1,6 +1,28 @@
 .app {
   min-height: 100vh;
-  background: #0b0b0f;
   color: #f5f5f5;
   padding: 1.5rem;
+
+  background:
+    linear-gradient(rgba(5, 8, 18, 0.72), rgba(5, 8, 18, 0.9)),
+    url("./assets/stars-bg.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #05070f;
+}
+
+a {
+  color: #9bb7ff;
+}
+
+button {
+  cursor: pointer;
 }

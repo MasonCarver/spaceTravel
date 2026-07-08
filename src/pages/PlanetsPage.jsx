@@ -3,13 +3,31 @@ import Loading from "../components/Loading";
 import SpaceTravelApi from "../services/SpaceTravelApi";
 import styles from "./PlanetsPage.module.css";
 
+import mercuryImg from "../assets/mercury.jpeg";
+import venusImg from "../assets/venus.jpeg";
+import earthImg from "../assets/earth.jpeg";
+import marsImg from "../assets/mars.jpeg";
+import jupiterImg from "../assets/jupiter.jpeg";
+import saturnImg from "../assets/saturn.jpeg";
+import uranusImg from "../assets/uranus.jpeg";
+import neptuneImg from "../assets/neptune.jpeg";
+
+const fallbackImages = {
+  Mercury: mercuryImg,
+  Venus: venusImg,
+  Earth: earthImg,
+  Mars: marsImg,
+  Jupiter: jupiterImg,
+  Saturn: saturnImg,
+  Uranus: uranusImg,
+  Neptune: neptuneImg,
+};
+
 function PlanetsPage() {
   const [planets, setPlanets] = useState([]);
   const [spacecrafts, setSpacecrafts] = useState([]);
-
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-
   const [selectedByPlanet, setSelectedByPlanet] = useState({});
 
   async function fetchData() {
@@ -40,12 +58,17 @@ function PlanetsPage() {
 
   const spacecraftsByPlanet = useMemo(() => {
     const map = new Map();
-    for (const p of planets) map.set(p.id, []);
-    for (const sc of spacecrafts) {
-      const list = map.get(sc.currentLocation) || [];
-      list.push(sc);
-      map.set(sc.currentLocation, list);
+
+    for (const planet of planets) {
+      map.set(planet.id, []);
     }
+
+    for (const spacecraft of spacecrafts) {
+      const list = map.get(spacecraft.currentLocation) || [];
+      list.push(spacecraft);
+      map.set(spacecraft.currentLocation, list);
+    }
+
     return map;
   }, [planets, spacecrafts]);
 
@@ -53,37 +76,45 @@ function PlanetsPage() {
     setError("");
 
     const spacecraftId = selectedByPlanet[planetId];
+
     if (!spacecraftId) return;
 
-    const sc = spacecrafts.find((s) => s.id === spacecraftId);
-    if (!sc) {
+    const spacecraft = spacecrafts.find(
+      (spacecraft) => spacecraft.id === spacecraftId,
+    );
+
+    if (!spacecraft) {
       setError("Selected spacecraft not found.");
       return;
     }
 
-    if (sc.currentLocation === planetId) {
+    if (spacecraft.currentLocation === planetId) {
       setError("Destination must be different from current location.");
       return;
     }
 
     setIsLoading(true);
 
-    const res = await SpaceTravelApi.sendSpacecraftToPlanet({
+    const response = await SpaceTravelApi.sendSpacecraftToPlanet({
       spacecraftId,
       targetPlanetId: planetId,
     });
 
-    setIsLoading(false);
-
-    if (res.isError) {
-      setError("Failed to send spacecraft.");
+    if (response.isError) {
+      setError(response.data?.message || "Failed to send spacecraft.");
+      setIsLoading(false);
       return;
     }
 
-    fetchData();
+    setSelectedByPlanet({});
+    await fetchData();
   }
 
   if (isLoading) return <Loading />;
+
+  const planetNames = Object.fromEntries(
+    planets.map((planet) => [planet.id, planet.name]),
+  );
 
   return (
     <div className={styles.planets}>
@@ -104,17 +135,15 @@ function PlanetsPage() {
                 </p>
               </div>
 
-              {planet.pictureUrl && (
-                <img
-                  src={planet.pictureUrl}
-                  alt={planet.name}
-                  style={{
-                    width: "100%",
-                    maxWidth: "420px",
-                    borderRadius: "8px",
-                  }}
-                />
-              )}
+              <img
+                src={planet.pictureUrl || fallbackImages[planet.name]}
+                alt={planet.name}
+                className={styles.planetCard__image}
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = fallbackImages[planet.name];
+                }}
+              />
 
               <h3 className={styles.planetCard__sectionTitle}>
                 Stationed Spacecraft
@@ -126,9 +155,9 @@ function PlanetsPage() {
                 </p>
               ) : (
                 <ul className={styles.planetCard__spacecraftList}>
-                  {stationed.map((sc) => (
-                    <li key={sc.id}>
-                      {sc.name} (cap: {sc.capacity})
+                  {stationed.map((spacecraft) => (
+                    <li key={spacecraft.id}>
+                      {spacecraft.name} (cap: {spacecraft.capacity})
                     </li>
                   ))}
                 </ul>
@@ -142,19 +171,23 @@ function PlanetsPage() {
                 <select
                   className={styles.planetCard__select}
                   value={selectedByPlanet[planet.id] || ""}
-                  onChange={(e) =>
-                    setSelectedByPlanet((prev) => ({
-                      ...prev,
-                      [planet.id]: e.target.value,
+                  onChange={(event) =>
+                    setSelectedByPlanet((previousSelected) => ({
+                      ...previousSelected,
+                      [planet.id]: event.target.value,
                     }))
                   }
                 >
                   <option value="">Select a spacecraft</option>
+
                   {spacecrafts
-                    .filter((sc) => sc.currentLocation !== planet.id)
-                    .map((sc) => (
-                      <option key={sc.id} value={sc.id}>
-                        {sc.name} (from planet {sc.currentLocation})
+                    .filter(
+                      (spacecraft) => spacecraft.currentLocation !== planet.id,
+                    )
+                    .map((spacecraft) => (
+                      <option key={spacecraft.id} value={spacecraft.id}>
+                        {spacecraft.name} (from{" "}
+                        {planetNames[spacecraft.currentLocation]})
                       </option>
                     ))}
                 </select>

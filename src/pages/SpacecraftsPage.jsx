@@ -46,42 +46,46 @@ function SpacecraftsPage() {
   return (
     <div className={styles.spacecrafts}>
       <div className={styles.spacecrafts__header}>
-        <h1>Spacecrafts</h1>
-        <Link to="/spacecrafts/new">Build New Spacecraft</Link>
+        <h1 className={styles.spacecrafts__title}>Spacecrafts</h1>
+
+        <Link to="/spacecrafts/new" className={styles.spacecrafts__buildLink}>
+          Build New Spacecraft
+        </Link>
       </div>
 
       {error && <p className={styles.spacecrafts__error}>{error}</p>}
 
-      {spacecrafts.length === 0 ? (
-        <p>No spacecraft found.</p>
-      ) : (
-        <ul className={styles.spacecrafts__list}>
-          {spacecrafts.map((sc) => (
-            <li key={sc.id} className={styles.card}>
-              <h3 className={styles.card__title}>{sc.name}</h3>
-              <p>
-                <strong>Capacity:</strong> {sc.capacity}
-              </p>
-              <p>{sc.description}</p>
+      <div className={styles.spacecrafts__list}>
+        {spacecrafts.map((spacecraft) => (
+          <div key={spacecraft.id} className={styles.spacecraftCard}>
+            <h2 className={styles.spacecraftCard__name}>{spacecraft.name}</h2>
 
-              <div className={styles.card__actions}>
-                <Link
-                  className={styles.card__link}
-                  to={`/spacecrafts/${sc.id}`}
-                >
-                  View Details
-                </Link>
-                <button
-                  className={styles.card__button}
-                  onClick={() => handleDelete(sc.id)}
-                >
-                  Destroy
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+            <p className={styles.spacecraftCard__meta}>
+              <strong>Capacity:</strong> {spacecraft.capacity}
+            </p>
+
+            <p className={styles.spacecraftCard__description}>
+              {spacecraft.description}
+            </p>
+
+            <div className={styles.spacecraftCard__actions}>
+              <Link
+                to={`/spacecrafts/${spacecraft.id}`}
+                className={styles.spacecraftCard__details}
+              >
+                View Details
+              </Link>
+
+              <button
+                className={styles.spacecraftCard__button}
+                onClick={() => handleDelete(spacecraft.id)}
+              >
+                Destroy
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

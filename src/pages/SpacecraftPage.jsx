@@ -10,25 +10,33 @@ function SpacecraftPage() {
   const [spacecraft, setSpacecraft] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [planets, setPlanets] = useState([]);
 
   useEffect(() => {
-    async function fetchSpacecraft() {
+    async function fetchData() {
       setIsLoading(true);
       setError("");
 
-      const res = await SpaceTravelApi.getSpacecraftById({ id });
+      const [spacecraftRes, planetsRes] = await Promise.all([
+        SpaceTravelApi.getSpacecraftById({ id }),
+        SpaceTravelApi.getPlanets(),
+      ]);
 
-      if (res.isError) {
+      if (spacecraftRes.isError) {
         setError("Failed to load spacecraft.");
         setSpacecraft(null);
       } else {
-        setSpacecraft(res.data);
+        setSpacecraft(spacecraftRes.data);
+      }
+
+      if (!planetsRes.isError) {
+        setPlanets(planetsRes.data);
       }
 
       setIsLoading(false);
     }
 
-    fetchSpacecraft();
+    fetchData();
   }, [id]);
 
   if (isLoading) return <Loading />;
@@ -51,6 +59,10 @@ function SpacecraftPage() {
     );
   }
 
+  const currentPlanet = planets.find(
+    (planet) => planet.id === spacecraft?.currentLocation,
+  );
+
   return (
     <div className={styles.spacecraft}>
       <Link to="/spacecrafts" className={styles.spacecraft__back}>
@@ -64,8 +76,8 @@ function SpacecraftPage() {
           <strong>Capacity:</strong> {spacecraft.capacity}
         </p>
         <p>
-          <strong>Current Location (Planet ID):</strong>{" "}
-          {spacecraft.currentLocation}
+          <strong>Current Location:</strong>{" "}
+          {currentPlanet ? currentPlanet.name : "Unknown"}
         </p>
       </div>
 

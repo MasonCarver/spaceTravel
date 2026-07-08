@@ -1,49 +1,67 @@
+import { Link } from "react-router-dom";
 import styles from "./HomePage.module.css";
 
 function HomePage() {
   return (
-    <div className={styles.home}>
-      <h1 className={styles.home__title}>
-        Space Travel: Expanding Horizons Beyond Earth
-      </h1>
+    <main className={styles.home}>
+      <section className={styles.hero}>
+        <p className={styles.hero__eyebrow}>Mission Control</p>
 
-      <div className={styles.home__sections}>
-        <section className={styles.home__section}>
-          <h2>Journey into the Future</h2>
-          <p>
-            In a world where the impossible has become reality, humanity has
-            reached beyond Earth to build new homes among the stars.
-          </p>
-        </section>
+        <h1 className={styles.hero__title}>
+          Space Travel: Expanding Horizons Beyond Earth
+        </h1>
 
-        <section className={styles.home__section}>
-          <h2>From Neglect to Innovation</h2>
-          <p>
-            Earth now stands as a reminder of the cost of neglect, and the power
-            of human ingenuity to rise beyond it.
-          </p>
-        </section>
+        <p className={styles.hero__text}>
+          Manage spacecraft construction, deploy missions across the solar
+          system, and monitor planetary populations as humanity establishes new
+          homes beyond Earth.
+        </p>
 
-        <section className={styles.home__section}>
-          <h2>Engineer, Explore, Leader</h2>
-          <p>
-            Design, deploy, and decommission spacecraft as you guide humanity's
-            future.
-          </p>
-        </section>
+        <div className={styles.hero__actions}>
+          <Link to="/spacecrafts" className={styles.button}>
+            View Spacecraft
+          </Link>
 
-        <section className={styles.home__section}>
-          <h2>A Universe of Awaits</h2>
+          <Link to="/planets" className={styles.buttonSecondary}>
+            View Planets
+          </Link>
+        </div>
+      </section>
+
+      <section className={styles.grid}>
+        <article className={styles.card}>
+          <h2>Build</h2>
           <p>
-            Immerse yourself in the thrill of exploration as you chart
-            interplanetary courses within our solar system. Seamlessly navigate
-            your fleet of spacecraft, hurtling through the cosmic void from one
-            celestial body to another. The universe becomes your playground, and
-            every planet a potential new home.
+            Construct new spacecraft by entering a name, passenger capacity,
+            description, and optional image URL.
           </p>
-        </section>
-      </div>
-    </div>
+        </article>
+
+        <article className={styles.card}>
+          <h2>Manage</h2>
+          <p>
+            Review spacecraft details, track current locations, and decommission
+            ships that are no longer needed.
+          </p>
+        </article>
+
+        <article className={styles.card}>
+          <h2>Dispatch</h2>
+          <p>
+            Send spacecraft between planets while preventing invalid transfers
+            to the same location.
+          </p>
+        </article>
+
+        <article className={styles.card}>
+          <h2>Colonize</h2>
+          <p>
+            Watch planetary populations update as spacecraft move colonists from
+            one planet to another.
+          </p>
+        </article>
+      </section>
+    </main>
   );
 }
 

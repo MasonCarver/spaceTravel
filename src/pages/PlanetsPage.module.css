@@ -1,11 +1,17 @@
 .planets {
-  max-width: 1000px;
+  width: min(1100px, 92vw);
   margin: 0 auto;
-  padding: 2rem;
+  padding: 3rem 0;
 }
 
 .planets__title {
-  margin-bottom: 1.5rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 2rem;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(155, 183, 255, 0.35);
+  letter-spacing: 0.03em;
 }
 
 .planets__error {
@@ -85,4 +91,13 @@
 .planetCard__hint {
   opacity: 0.85;
   font-size: 0.9rem;
+}
+
+.planetCard__image {
+  width: 100%;
+  max-width: 420px;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
 }
